@@ -11,11 +11,16 @@ use App\Token;
 
 class TokenController extends Controller
 {
-    public function generateToken($clientId)
+    public function generateToken(Request $request, $clientId)
     {
         $app = App::findByClientId($clientId);
 
         $token = $this->createToken($app);
+        $query = str_replace($request->url(), '', $request->fullUrl());
+        if($query && strlen($query)) {
+            $token->query_string = substr($query, 1);
+            $token->save();
+        }
 
         return redirect('https://telegram.me/'.env('BOT_NAME').'?start='.$token->token);
     }

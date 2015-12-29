@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\App;
 use App\Code;
 use App\User;
+use Auth;
 
 class UserController extends Controller
 {
@@ -17,8 +18,8 @@ class UserController extends Controller
     public function login(Requests\LoginRequest $request)
     {
         $user = $this->getUser($request->input('code'));
-
-        return response()->json($user);
+        Auth::login($user);
+        return redirect('app');
     }
 
     private function getUser($code)
@@ -39,18 +40,18 @@ class UserController extends Controller
         $result = json_decode($json, true);
 
         if(!array_key_exists('access_token', $result))
-            app()->abort(401, 'No active user found.');
+            app()->abort($result['error'], $result['description']);
         if(array_key_exists('active', $result) && !$result['active'])
-            app()->abort(401, 'No active user found.');
+            app()->abort($result['error'], $result['description']);
 
         try {
-            $user = User::findByAccessToken($result['access_token']);
+            $user = User::findByTelegramId($result['telegram_id']);
         } catch (ModelNotFoundException $e) {
             $user = new User();
             $user->email = $result['email'];
             $user->telegram_id = $result['telegram_id'];
-            $user->access_token = $result['access_token'];
         }
+        $user->access_token = $result['access_token'];
         $user->name = $result['name'];
         $user->username = $result['username'];
         $user->save();

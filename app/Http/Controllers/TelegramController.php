@@ -26,6 +26,11 @@ class TelegramController extends Controller
 
         if(starts_with($message['text'], '/start'))
             $this->start($message);
+        //else if(starts_with($message['text'], '/cancel'))
+            // do nothing
+        else if(starts_with($message['text'], '/list'))
+            $this->listApps($message);
+
 
 
         return response()->json('', 200);
@@ -52,8 +57,8 @@ class TelegramController extends Controller
             $auth->app_id = $app->id;
             $auth->telegram_id = $telegramId;
             $auth->email = $telegramId.'@telegramlogin.com';
-            $auth->access_token = generate_access_token();
         }
+        $auth->access_token = generate_access_token();
         $auth->name = $telegramName;
         $auth->username = $username;
         $auth->active = true;
@@ -66,18 +71,45 @@ class TelegramController extends Controller
         ));
 
         $url = $app->redirect_url.'?code='.$code->code;
+        if($token->query_string)
+            $url .= '&'.$token->query_string;
 
         $success = false;
         $trys = 0;
         while(!$success && $trys < 5) {
             $text = 'Please click this link to finish your signup at *'.$app->name.'*: ';
             $text .= $url;
-            $tgUrl = 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage?text='.urlencode($text).'&parse_mode=Markdown&chat_id='.$auth->telegram_id;
+            $tgUrl = 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage?text='.$text.'&chat_id='.$auth->telegram_id;
             $success = json_decode(file_get_contents($tgUrl), true)['ok'];
-            sleep(2);
+            sleep(1);
             $trys++;
         }
 
         $token->delete();
+    }
+
+    private function listApps($message)
+    {
+        $key = trim(str_replace('/start', '', $message['text']));
+        $telegramId = $message['from']['id'];
+
+        $apps = App::findByTelegramId($telegramId);
+        if(count($apps)) {
+            $text = 'Here are your active apps:'.PHP_EOL;
+            $count = 1;
+            foreach($apps as $a) {
+                $text .= $count.'. '.$a->name;
+                if($a->website)
+                    $text .= ' ('.$a->website.')';
+                $text .= PHP_EOL;
+                $count++;
+            }
+            $text .= PHP_EOL.'';
+        } else {
+            $text = 'You have no active apps.';
+        }
+
+        $tgUrl = 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage?text='.urlencode($text).'&chat_id='.$telegramId;
+        \Log::debug(file_get_contents($tgUrl));
     }
 }

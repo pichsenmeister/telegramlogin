@@ -14,9 +14,9 @@ class AppController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json($request->user());
     }
 
     /**

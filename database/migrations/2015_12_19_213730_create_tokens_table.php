@@ -16,6 +16,7 @@ class CreateTokensTable extends Migration
             $table->increments('id');
             $table->integer('app_id')->unsigned();
             $table->string('token')->unique();
+            $table->text('query_string')->nullable();
             $table->timestamps();
 
             $table->foreign('app_id')

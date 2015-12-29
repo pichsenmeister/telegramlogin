@@ -42,4 +42,10 @@ class User extends Model implements AuthenticatableContract,
         return User::where('access_token', '=', $accessToken)
             ->firstOrFail();
     }
+
+    public static function findByTelegramId($telegramId)
+    {
+        return User::where('telegram_id', '=', $telegramId)
+            ->firstOrFail();
+    }
 }

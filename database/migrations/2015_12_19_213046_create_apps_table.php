@@ -18,6 +18,7 @@ class CreateAppsTable extends Migration
             $table->string('name');
             $table->integer('client_id')->unsigned()->unique();
             $table->string('client_secret');
+            $table->string('website')->nullable();
             $table->string('redirect_url');
             $table->timestamps();
 

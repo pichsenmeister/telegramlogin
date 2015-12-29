@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Illuminate\Contracts\Validation\Validator;
 
 class LoginRequest extends Request
 {
@@ -24,7 +25,7 @@ class LoginRequest extends Request
     public function rules()
     {
         return [
-            'code' => 'required|string|exists:codes,code'
+            'code' => 'required|string'
         ];
     }
 }

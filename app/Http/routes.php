@@ -15,12 +15,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// webhook for all incoming telegram requests
 Route::post('/receive/{token}', 'TelegramController@receive');
-Route::get('/token/{clientId}', 'TokenController@generateToken');
+
+// login / signup route for TelegramLogin.com
 Route::get('/login', 'UserController@login');
-Route::post('/user', 'AuthController@code');
 
-//Route::group(['middleware' => ['auth']], function()
-//{
+// route to exchange code to access token
+Route::post('/code', 'CodeController@code');
+Route::get('/code', 'CodeController@code');
 
-//});
+// generate token and redirect to telegram.me site
+Route::get('/token/{clientId}', 'TokenController@generateToken');
+
+Route::group(['middleware' => ['auth']], function()
+{
+    Route::get('app', 'AppController@index');
+});

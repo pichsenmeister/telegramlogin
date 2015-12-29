@@ -39,4 +39,13 @@ class App extends Model
             ->where('client_secret', '=', $clientSecret)
             ->firstOrFail();
     }
+
+    public static function findByTelegramId($telegramId)
+    {
+        return App::join('auths', 'auths.app_id', '=', 'apps.id')
+            ->where('auths.telegram_id', '=', $telegramId)
+            ->where('auths.active', '=', true)
+            ->groupBy('apps.id')
+            ->get(array('apps.*'));
+    }
 }
