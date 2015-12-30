@@ -15,10 +15,8 @@ class CreateAuthsTable extends Migration
         Schema::create('auths', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('app_id')->unsigned();
-            $table->bigInteger('telegram_id');
+            $table->integer('telegram_user_id')->unsigned();
             $table->string('email');
-            $table->string('name');
-            $table->string('username')->nullable();
             $table->string('access_token')->unique();
             $table->boolean('active')->default(true);
             $table->timestamps();
@@ -26,7 +24,9 @@ class CreateAuthsTable extends Migration
             $table->foreign('app_id')
                 ->references('id')->on('apps')
                 ->onDelete('cascade')->onUpdate('cascade');
-            $table->index('telegram_id');
+            $table->foreign('telegram_user_id')
+                ->references('id')->on('telegram_users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

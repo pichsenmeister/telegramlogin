@@ -18,25 +18,29 @@ class Auth extends Model
      *
      * @var array
      */
-    protected $fillable = ['app_id', 'telegram_id', 'email', 'name',
-        'username'];
+    protected $fillable = ['app_id', 'telegram_user_id', 'email'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = [];
+    protected $hidden = ['id', 'telegram_id', 'telegram_user_id', 'app_id', 'updated_at'];
 
     public function app()
     {
         return $this->belongsTo('App\App');
     }
 
-    public static function findByAppAndTelegramId($app, $telegramId)
+    public function telegramUser()
+    {
+        return $this->belongsTo('App\TelegramUser');
+    }
+
+    public static function findByAppAndTelegramUser($app, $telegramUser)
     {
         return Auth::where('app_id', '=', $app->id)
-            ->where('telegram_id', '=', $telegramId)
+            ->where('telegram_user_id', '=', $telegramUser->id)
             ->firstOrFail();
     }
 

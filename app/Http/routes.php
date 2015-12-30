@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 // webhook for all incoming telegram requests
 Route::post('/receive/{token}', 'TelegramController@receive');
@@ -22,8 +20,8 @@ Route::post('/receive/{token}', 'TelegramController@receive');
 Route::get('/login', 'UserController@login');
 
 // route to exchange code to access token
-Route::post('/code', 'CodeController@code');
-Route::get('/code', 'CodeController@code');
+Route::post('/user', 'CodeController@code');
+Route::get('/user', 'CodeController@code');
 
 // generate token and redirect to telegram.me site
 Route::get('/token/{clientId}', 'TokenController@generateToken');

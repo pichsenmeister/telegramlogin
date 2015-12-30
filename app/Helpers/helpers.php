@@ -17,7 +17,11 @@ function generate_client_id() {
 }
 
 function generate_client_secret() {
-    return random_str(20, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-_=$/!#');
+    return random_str(20, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-_=$!');
+}
+
+function generate_email() {
+    return random_str(15);
 }
 
 function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')

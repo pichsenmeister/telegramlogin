@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\App;
 use App\Auth;
 use App\Code;
+use App\TelegramUser;
 use App\Token;
 
 class TelegramController extends Controller
@@ -30,8 +31,10 @@ class TelegramController extends Controller
             // do nothing
         else if(starts_with($message['text'], '/list'))
             $this->listApps($message);
+        else if(starts_with($message['text'], '/revoke'))
+            $this->revoke($message);
 
-
+        \Log::debug($message);
 
         return response()->json('', 200);
     }
@@ -51,16 +54,25 @@ class TelegramController extends Controller
             $username = $from['username'];
 
         try {
-            $auth = Auth::findByAppAndTelegramId($app, $telegramId);
+            $tg = TelegramUser::findByTelegramId($telegramId);
+        } catch (ModelNotFoundException $e) {
+            $tg = new TelegramUser();
+            $tg->telegram_id = $telegramId;
+        }
+        $tg->name = $telegramName;
+        $tg->username = $username;
+        $tg->status = 'access_granted';
+        $tg->save();
+
+        try {
+            $auth = Auth::findByAppAndTelegramUser($app, $tg);
         } catch (ModelNotFoundException $e) {
             $auth = new Auth();
             $auth->app_id = $app->id;
-            $auth->telegram_id = $telegramId;
-            $auth->email = $telegramId.'@telegramlogin.com';
+            $auth->telegram_user_id = $tg->id;
+            $auth->email = generate_email().'@telegramlogin.com';
         }
         $auth->access_token = generate_access_token();
-        $auth->name = $telegramName;
-        $auth->username = $username;
         $auth->active = true;
         $auth->save();
 
@@ -74,13 +86,19 @@ class TelegramController extends Controller
         if($token->query_string)
             $url .= '&'.$token->query_string;
 
+        $text = 'Please click this link to finish your signup at *'.$app->name.'*: ';
+        $text .= $url;
+
+        $params = array(
+            'text' => $text,
+            'chat_id' => $telegramId,
+            'parse_mode' => 'Markdown'
+        );
+
         $success = false;
         $trys = 0;
         while(!$success && $trys < 5) {
-            $text = 'Please click this link to finish your signup at *'.$app->name.'*: ';
-            $text .= $url;
-            $tgUrl = 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage?text='.$text.'&chat_id='.$auth->telegram_id;
-            $success = json_decode(file_get_contents($tgUrl), true)['ok'];
+            $success = $this->send($params)['ok'];
             sleep(1);
             $trys++;
         }
@@ -90,10 +108,10 @@ class TelegramController extends Controller
 
     private function listApps($message)
     {
-        $key = trim(str_replace('/start', '', $message['text']));
         $telegramId = $message['from']['id'];
 
-        $apps = App::findByTelegramId($telegramId);
+        $tg = TelegramUser::findByTelegramId($telegramId);
+        $apps = App::findByTelegramUser($tg);
         if(count($apps)) {
             $text = 'Here are your active apps:'.PHP_EOL;
             $count = 1;
@@ -109,7 +127,51 @@ class TelegramController extends Controller
             $text = 'You have no active apps.';
         }
 
-        $tgUrl = 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage?text='.urlencode($text).'&chat_id='.$telegramId;
-        \Log::debug(file_get_contents($tgUrl));
+        $params = array(
+            'text' => $text,
+            'chat_id' => $telegramId,
+            'parse_mode' => 'Markdown'
+        );
+
+        \Log::debug($this->send($params));
+    }
+
+    private function revoke($message)
+    {
+        $telegramId = $message['from']['id'];
+
+        $tg = TelegramUser::findByTelegramId($telegramId);
+        $apps = App::findByTelegramUser($tg);
+
+        $keyboard = array();
+        foreach($apps as $a) {
+            $keyboard[] = array($a->name);
+        }
+
+        $markup = array(
+            'keyboard' => $keyboard,
+            'resize_keyboard' => true,
+            'one_time_keyboard' => true
+        );
+
+        $text = 'Select an app to revoke access or type /cancel to cancel this operation:'.PHP_EOL;
+        $params = array(
+            'text' => $text,
+            'chat_id' => $telegramId,
+            'parse_mode' => 'Markdown',
+            'reply_markup' => json_encode($markup)
+        );
+
+        \Log::debug($this->send($params));
+    }
+
+    private function send($params)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        $json = curl_exec($ch);
+        return json_decode($json, true);
     }
 }

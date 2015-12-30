@@ -27,10 +27,13 @@ class CodeController extends Controller
 
             $code->delete();
 
-            if(!$auth || !$auth->active)
+            if(!$auth || !$auth->active) {
                 return response()->json(['error' => 401, 'description' => 'No active user found.'], 401);
-            else
+            } else {
+                $auth->telegram_user = $auth->telegramUser()->first();
+                //$data = array_merge($tgUser->toArray(), $auth->toArray());
                 return response()->json($auth);
+            }
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 404, 'description' => 'Invalid code.'], 404);
         }

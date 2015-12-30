@@ -37,6 +37,7 @@ class UserController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         $json = curl_exec($ch);
+        \Log::debug($json);
         $result = json_decode($json, true);
 
         if(!array_key_exists('access_token', $result))
@@ -45,15 +46,15 @@ class UserController extends Controller
             app()->abort($result['error'], $result['description']);
 
         try {
-            $user = User::findByTelegramId($result['telegram_id']);
+            $user = User::findByTelegramId($result['telegram_user']['telegram_id']);
         } catch (ModelNotFoundException $e) {
             $user = new User();
             $user->email = $result['email'];
-            $user->telegram_id = $result['telegram_id'];
+            $user->telegram_id = $result['telegram_user']['telegram_id'];
         }
         $user->access_token = $result['access_token'];
-        $user->name = $result['name'];
-        $user->username = $result['username'];
+        $user->name = $result['telegram_user']['name'];
+        $user->username = $result['telegram_user']['username'];
         $user->save();
 
         return $user;

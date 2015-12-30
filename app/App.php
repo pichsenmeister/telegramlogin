@@ -40,10 +40,10 @@ class App extends Model
             ->firstOrFail();
     }
 
-    public static function findByTelegramId($telegramId)
+    public static function findByTelegramUser($telegramUser)
     {
         return App::join('auths', 'auths.app_id', '=', 'apps.id')
-            ->where('auths.telegram_id', '=', $telegramId)
+            ->where('auths.telegram_user_id', '=', $telegramUser->id)
             ->where('auths.active', '=', true)
             ->groupBy('apps.id')
             ->get(array('apps.*'));
