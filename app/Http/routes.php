@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'HomeController@index');
+Route::get('/faq', function() { return view('faq'); });
+Route::get('/docs', function() { return view('docs'); });
 
 // webhook for all incoming telegram requests
 Route::post('/receive/{token}', 'TelegramController@receive');
@@ -30,6 +32,7 @@ Route::group(['middleware' => ['auth']], function()
 {
     Route::get('dashboard', 'DashboardController@index');
     Route::get('profile', 'DashboardController@profile');
+    Route::get('logout', 'DashboardController@logout');
 
     Route::resource('app', 'AppController',
         ['except' => ['index', 'show']]);

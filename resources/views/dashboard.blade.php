@@ -2,14 +2,18 @@
 
 @section('navbar')
     <li><a href="/">Home</a></li>
-    <li><a href="/faq">FAQs</a></li>
+    <li><a href="/faq">FAQ</a></li>
     <li><a href="/docs">Documentation</a></li>
-    <li><a href="/contact">Contact</a></li>
     <li class="active"><a href="/dashboard">Dashboard</a></li>
 @endsection
 
 @section('content')
     <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Dashboard</h1>
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-12">
                 <h2>My apps</h2>

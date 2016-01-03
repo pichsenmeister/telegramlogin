@@ -2,9 +2,8 @@
 
 @section('navbar')
     <li class="active"><a href="/">Home</a></li>
-    <li><a href="/faq">FAQs</a></li>
+    <li><a href="/faq">FAQ</a></li>
     <li><a href="/docs">Documentation</a></li>
-    <li><a href="/contact">Contact</a></li>
     @if(Auth::user())
         <li><a href="/dashboard">Dashboard</a></li>
     @endif

@@ -33,11 +33,10 @@ class TelegramController extends Controller
             $this->listApps($message);
         else if(starts_with($message['text'], '/revoke'))
             $this->revoke($message);
+        else if(starts_with($message['text'], '/help'))
+            $this->help($message);
         else
             $this->commandReply($message);
-
-
-        \Log::debug($message);
 
         return response()->json('', 200);
     }
@@ -127,7 +126,7 @@ class TelegramController extends Controller
             'reply_markup' => json_encode(['hide_keyboard' => true])
         );
 
-        \Log::debug($this->send($params));
+        $this->send($params);
     }
 
     private function listApps($message)
@@ -159,7 +158,7 @@ class TelegramController extends Controller
             'parse_mode' => 'Markdown'
         );
 
-        \Log::debug($this->send($params));
+        $this->send($params);
     }
 
     private function revoke($message)
@@ -190,7 +189,25 @@ class TelegramController extends Controller
             'reply_markup' => json_encode($markup)
         );
 
-        \Log::debug($this->send($params));
+        $this->send($params);
+    }
+
+    private function help($message)
+    {
+        $telegramId = $message['from']['id'];
+
+        $tg = TelegramUser::findByTelegramId($telegramId);
+        $tg->status = 'help';
+        $tg->save();
+
+        $text = 'Please check our [FAQs](https://telegramlogin.com/faq) for help.'.PHP_EOL;
+        $params = array(
+            'text' => $text,
+            'chat_id' => $telegramId,
+            'parse_mode' => 'Markdown'
+        );
+
+        $this->send($params);
     }
 
     private function commandReply($message)
@@ -226,7 +243,7 @@ class TelegramController extends Controller
 
         $params['text'] = $text;
 
-        \Log::debug($this->send($params));
+        $this->send($params);
     }
 
 

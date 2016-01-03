@@ -65,10 +65,12 @@
         <div class="container">
             <p class="text-muted">
                 <span class="pull-left">
-                    <a href="https://telegram.me/tglogin" target="_blank"><i class="fa fa-bullhorn text-black"></i> Telegram Login</a>
+                    <a href="https://telegram.me/tglogin" target="_blank"><i class="fa fa-bullhorn text-black"></i> TelegramLogin Channel</a>
                     <br>
-                    made by <a href="https://pichsenmeister.com" target="_blank">david pichsenmeister</a>
-                    (<a href="https://twitter.com/3x14159265">@3x14159265</a>)
+                    <a href="https://telegram.me/pichsenmeister" target="_blank"><i class="fa fa-life-ring text-black"></i> Support</a>
+                    <br>
+                    developed by <a href="https://pichsenmeister.com" target="_blank">david pichsenmeister</a>
+                    (<a href="https://github.com/3x14159265">@3x14159265</a>)
                 </span>
                 <span class="pull-right">
                     powered by <a href="https://orat.io" target="_blank">orat.io</a> -

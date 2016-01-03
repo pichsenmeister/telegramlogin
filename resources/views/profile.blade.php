@@ -2,9 +2,8 @@
 
 @section('navbar')
     <li><a href="/">Home</a></li>
-    <li><a href="/faq">FAQs</a></li>
+    <li><a href="/faq">FAQ</a></li>
     <li><a href="/docs">Documentation</a></li>
-    <li><a href="/contact">Contact</a></li>
     <li><a href="/dashboard">Dashboard</a></li>
 @endsection
 
@@ -25,6 +24,7 @@
                 @endif
                 <p><strong>Telegram ID:</strong> {{ $user->telegram_id }}</p>
                 <p><strong>Generated email:</strong> {{ $user->email }}</p>
+                <p><a href="/logout">Logout</a></p>
             </div>
         </div>
     </div>

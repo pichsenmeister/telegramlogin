@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\App;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -26,6 +27,12 @@ class DashboardController extends Controller
     public function profile(Request $request)
     {
         return view('profile', ['user' => $request->user()]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
     }
 
 
