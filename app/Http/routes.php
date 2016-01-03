@@ -28,5 +28,9 @@ Route::get('/token/{clientId}', 'TokenController@generateToken');
 
 Route::group(['middleware' => ['auth']], function()
 {
-    Route::get('app', 'AppController@index');
+    Route::get('dashboard', 'DashboardController@index');
+    Route::get('profile', 'DashboardController@profile');
+
+    Route::resource('app', 'AppController',
+        ['except' => ['index', 'show']]);
 });

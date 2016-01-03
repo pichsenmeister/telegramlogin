@@ -38,7 +38,7 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('auth/login');
+                return redirect()->guest('/token/314159265?state='.random_str(20));
             }
         }
 

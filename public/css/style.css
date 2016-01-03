@@ -1,0 +1,118 @@
+
+/* logo
+-------------------------------------------------- */
+.logo {
+    width: 128px;
+    height: 128px;
+    background: #1e96c8;
+    border-radius: 64px;
+    margin: auto;
+}
+.logo-key {
+    -moz-transform: scale(1, -1);
+    -webkit-transform: scale(1, -1);
+    -o-transform: scale(1, -1);
+    -ms-transform: scale(1, -1);
+    transform: scale(1, -1);
+}
+.hero .logo-key {
+    color: #fff;
+    font-size: 84px;
+    line-height: 128px;
+}
+/*.logo-button, .logo-button:hover {
+    background: #1e96c8;
+    border-color: #1e96c8;
+    color: #fff !important;
+
+}*/
+/*.logo-button:active, .logo-button:focus {
+    background: #057daf !important;
+    border-color: #057daf !important;
+}*/
+
+
+/* navbar
+-------------------------------------------------- */
+.navbar .nav .active a {
+    box-shadow: 0px 3px 0px 0px #179cde;
+    -webkit-box-shadow: 0px 3px 0px 0px #179cde;
+    padding-bottom: 13.5px;
+}
+.navbar .nav a, .navbar .nav a:hover, .navbar .nav a:focus {
+    background-color: transparent;
+}
+.navbar .nav a:hover, .navbar .nav a:focus {
+    background-color: transparent;
+    box-shadow: 0px 3px 0px 0px #179cde;
+    -webkit-box-shadow: 0px 3px 0px 0px #179cde;
+    padding-bottom: 13.5px;
+}
+.navbar .navbar-inner {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    border-bottom: 1px solid #e8e8e8;
+}
+.nav-login {
+    list-style-type: none;
+    color: inherit;
+}
+.text-black {
+    color: #000;
+}
+
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 80px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 80px;
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+.container {
+  width: auto;
+  max-width: 970px;
+  padding: 0 15px;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+.hero {
+  padding: 40px 15px;
+  text-align: center;
+}
+.navbar a {
+    color: #0088cc;
+}
+.profile-avatar {
+    max-width: 128px
+}
+.mt {
+    margin-top: 15px;
+}
+.mb {
+    margin-bottom: 15px;
+}
+.ml {
+    margin-left: 15px;
+}
+.mr {
+    margin-right: 15px;
+}

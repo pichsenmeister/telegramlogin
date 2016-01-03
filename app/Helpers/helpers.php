@@ -21,7 +21,7 @@ function generate_client_secret() {
 }
 
 function generate_email() {
-    return random_str(15);
+    return random_str(8, '0123456789abcdefghijklmnopqrstuvwxyz');
 }
 
 function random_str($length, $keyspace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')

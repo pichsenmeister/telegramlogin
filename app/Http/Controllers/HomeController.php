@@ -16,9 +16,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->user()) {
-            return redirect('/app');
-        }
         return view('welcome');
     }
 

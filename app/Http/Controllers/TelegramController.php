@@ -23,16 +23,19 @@ class TelegramController extends Controller
         $message = $request->input('message');
 
         if(!array_key_exists('text', $message))
-            app()->abort(200, 'Missing start command');
+            app()->abort(200, 'Missing command');
 
         if(starts_with($message['text'], '/start'))
             $this->start($message);
-        //else if(starts_with($message['text'], '/cancel'))
-            // do nothing
+        else if(starts_with($message['text'], '/cancel'))
+            $this->cancel($message);
         else if(starts_with($message['text'], '/list'))
             $this->listApps($message);
         else if(starts_with($message['text'], '/revoke'))
             $this->revoke($message);
+        else
+            $this->commandReply($message);
+
 
         \Log::debug($message);
 
@@ -61,7 +64,11 @@ class TelegramController extends Controller
         }
         $tg->name = $telegramName;
         $tg->username = $username;
-        $tg->status = 'access_granted';
+        if($app->client_id == 314159265) {
+            $tg->status = str_replace('state=', '', $token->query_string);
+        } else {
+            $tg->status = 'access_granted';
+        }
         $tg->save();
 
         try {
@@ -70,7 +77,7 @@ class TelegramController extends Controller
             $auth = new Auth();
             $auth->app_id = $app->id;
             $auth->telegram_user_id = $tg->id;
-            $auth->email = generate_email().'@telegramlogin.com';
+            $auth->email = generate_email().'-'.$app->id.'-'.$tg->id.'@telegramlogin.com';
         }
         $auth->access_token = generate_access_token();
         $auth->active = true;
@@ -106,11 +113,30 @@ class TelegramController extends Controller
         $token->delete();
     }
 
+    private function cancel($message)
+    {
+        $telegramId = $message['from']['id'];
+        $tg = TelegramUser::findByTelegramId($telegramId);
+        $tg->status = 'cancel';
+        $tg->save();
+
+        $params = array(
+            'text' => 'Operation cancelled.',
+            'chat_id' => $telegramId,
+            'parse_mode' => 'Markdown',
+            'reply_markup' => json_encode(['hide_keyboard' => true])
+        );
+
+        \Log::debug($this->send($params));
+    }
+
     private function listApps($message)
     {
         $telegramId = $message['from']['id'];
 
         $tg = TelegramUser::findByTelegramId($telegramId);
+        $tg->status = 'list_apps';
+        $tg->save();
         $apps = App::findByTelegramUser($tg);
         if(count($apps)) {
             $text = 'Here are your active apps:'.PHP_EOL;
@@ -141,11 +167,13 @@ class TelegramController extends Controller
         $telegramId = $message['from']['id'];
 
         $tg = TelegramUser::findByTelegramId($telegramId);
+        $tg->status = 'revoke_access';
+        $tg->save();
         $apps = App::findByTelegramUser($tg);
 
         $keyboard = array();
         foreach($apps as $a) {
-            $keyboard[] = array($a->name);
+            $keyboard[] = array('['.$a->client_id.'] - '.$a->name);
         }
 
         $markup = array(
@@ -164,6 +192,43 @@ class TelegramController extends Controller
 
         \Log::debug($this->send($params));
     }
+
+    private function commandReply($message)
+    {
+        $telegramId = $message['from']['id'];
+        $tg = TelegramUser::findByTelegramId($telegramId);
+
+        $params = array(
+            'chat_id' => $telegramId,
+            'parse_mode' => 'Markdown',
+        );
+
+        if($tg->status == 'revoke_access') {
+            $clientId = preg_replace('/[^0-9,.]/', '', $message['text']);
+            try {
+                $app = App::findByClientId($clientId);
+                $auth = Auth::findByAppAndTelegramUser($app, $tg);
+                $auth->active = false;
+                $auth->save();
+                $text = 'Access to this app has been revoked.';
+                $tg->status = 'access_revoked';
+                $params['reply_markup'] = json_encode(['hide_keyboard' => true]);
+            } catch(ModelNotFoundException $e) {
+                $text = 'Unknown app. Please choose an app from the given list:';
+            }
+        } else {
+            $text = 'Unknown command.';
+            $tg->status = 'unknown_command';
+            $params['reply_markup'] = json_encode(['hide_keyboard' => true]);
+        }
+
+        $tg->save();
+
+        $params['text'] = $text;
+
+        \Log::debug($this->send($params));
+    }
+
 
     private function send($params)
     {

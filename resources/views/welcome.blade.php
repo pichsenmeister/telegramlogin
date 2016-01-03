@@ -1,45 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
+@extends('app')
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+@section('navbar')
+    <li class="active"><a href="/">Home</a></li>
+    <li><a href="/faq">FAQs</a></li>
+    <li><a href="/docs">Documentation</a></li>
+    <li><a href="/contact">Contact</a></li>
+    @if(Auth::user())
+        <li><a href="/dashboard">Dashboard</a></li>
+    @endif
+@endsection
 
-        <style>
-            html, body {
-                height: 100%;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Laravel 5</div>
-            </div>
+@section('content')
+    <div class="hero">
+        <div class="logo">
+            <i class="fa fa-6 fa-key logo-key"></i>
         </div>
-    </body>
-</html>
+        <h1>TelegramLogin</h1>
+        <div class="text-muted"><small>(unofficial)</small></div>
+    </div>
+@endsection

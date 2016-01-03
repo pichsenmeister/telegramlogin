@@ -48,4 +48,17 @@ class App extends Model
             ->groupBy('apps.id')
             ->get(array('apps.*'));
     }
+
+    public static function findByUser($user)
+    {
+        return App::where('user_id', '=', $user->id)
+            ->get();
+    }
+
+    public static function findByUserAndId($user, $id)
+    {
+        return App::where('id', '=', $id)
+            ->where('user_id', '=', $user->id)
+            ->firstOrFail();
+    }
 }
