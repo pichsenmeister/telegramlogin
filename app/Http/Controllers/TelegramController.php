@@ -92,7 +92,7 @@ class TelegramController extends Controller
         if($token->query_string)
             $url .= '&'.$token->query_string;
 
-        $text = 'Please click this link to finish your signup at *'.$app->name.'*: ';
+        $text = 'Please click this link to finish your signup at *'.$app->name.'*: '.PHP_EOL;
         $text .= '[Click here]('.$url.')';
 
         $params = array(
