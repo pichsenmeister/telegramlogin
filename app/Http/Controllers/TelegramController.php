@@ -93,12 +93,11 @@ class TelegramController extends Controller
             $url .= '&'.$token->query_string;
 
         $text = 'Please click this link to finish your signup at *'.$app->name.'*: ';
-        $text .= $url;
+        $text .= '(Click here)['.$url.']';
 
         $params = array(
             'text' => $text,
-            'chat_id' => $telegramId,
-            'parse_mode' => 'Markdown'
+            'chat_id' => $telegramId
         );
 
         $success = false;
@@ -122,7 +121,6 @@ class TelegramController extends Controller
         $params = array(
             'text' => 'Operation cancelled.',
             'chat_id' => $telegramId,
-            'parse_mode' => 'Markdown',
             'reply_markup' => json_encode(['hide_keyboard' => true])
         );
 
@@ -154,8 +152,7 @@ class TelegramController extends Controller
 
         $params = array(
             'text' => $text,
-            'chat_id' => $telegramId,
-            'parse_mode' => 'Markdown'
+            'chat_id' => $telegramId
         );
 
         $this->send($params);
@@ -185,7 +182,6 @@ class TelegramController extends Controller
         $params = array(
             'text' => $text,
             'chat_id' => $telegramId,
-            'parse_mode' => 'Markdown',
             'reply_markup' => json_encode($markup)
         );
 
@@ -203,8 +199,7 @@ class TelegramController extends Controller
         $text = 'Please check our [FAQs](https://telegramlogin.com/faq) for help.'.PHP_EOL;
         $params = array(
             'text' => $text,
-            'chat_id' => $telegramId,
-            'parse_mode' => 'Markdown'
+            'chat_id' => $telegramId
         );
 
         $this->send($params);
@@ -216,8 +211,7 @@ class TelegramController extends Controller
         $tg = TelegramUser::findByTelegramId($telegramId);
 
         $params = array(
-            'chat_id' => $telegramId,
-            'parse_mode' => 'Markdown',
+            'chat_id' => $telegramId
         );
 
         if($tg->status == 'revoke_access') {
@@ -249,6 +243,8 @@ class TelegramController extends Controller
 
     private function send($params)
     {
+        $params['disable_web_page_preview'] = true;
+        $params['parse_mode'] = 'Markdown';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
