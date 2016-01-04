@@ -93,7 +93,7 @@ class TelegramController extends Controller
             $url .= '&'.$token->query_string;
 
         $text = 'Please click this link to finish your signup at *'.$app->name.'*: ';
-        $text .= '(Click here)['.$url.']';
+        $text .= '[Click here]('.$url.')';
 
         $params = array(
             'text' => $text,
