@@ -16,6 +16,18 @@ use Auth;
 class UserController extends Controller
 {
 
+    public function show(Request $request)
+    {
+        $accessToken = $request->input('access_token');
+        try {
+            $auth = \App\Auth::findByAccessToken($accessToken);
+            $auth->telegram_user = $auth->telegramUser()->first();
+            return response()->json($auth);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'No active user found.'],404);
+        }
+    }
+
     public function login(Requests\LoginRequest $request)
     {
         $user = $this->getUser($request->input('code'), $request->input('state'));
@@ -34,7 +46,7 @@ class UserController extends Controller
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, env('URL').'/user');
+        curl_setopt($ch, CURLOPT_URL, env('URL').'/code');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         $json = curl_exec($ch);
@@ -50,7 +62,7 @@ class UserController extends Controller
             app()->abort(403, 'Invalid state.');
 
         $tg->status = 'access_granted';
-        $tg->save();    
+        $tg->save();
 
         try {
             $user = User::findByTelegramId($result['telegram_user']['telegram_id']);

@@ -22,8 +22,10 @@ Route::post('/receive/{token}', 'TelegramController@receive');
 Route::get('/login', 'UserController@login');
 
 // route to exchange code to access token
-Route::post('/user', 'CodeController@code');
-Route::get('/user', 'CodeController@code');
+Route::post('/code', 'CodeController@code');
+
+Route::get('/user', 'UserController@show');
+Route::post('/user', 'UserController@show');
 
 // generate token and redirect to telegram.me site
 Route::get('/token/{clientId}', 'TokenController@generateToken');

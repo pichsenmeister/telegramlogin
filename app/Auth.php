@@ -25,7 +25,7 @@ class Auth extends Model
      *
      * @var array
      */
-    protected $hidden = ['id', 'telegram_id', 'telegram_user_id', 'app_id', 'updated_at'];
+    protected $hidden = ['telegram_id', 'telegram_user_id', 'app_id', 'updated_at'];
 
     public function app()
     {
@@ -41,6 +41,12 @@ class Auth extends Model
     {
         return Auth::where('app_id', '=', $app->id)
             ->where('telegram_user_id', '=', $telegramUser->id)
+            ->firstOrFail();
+    }
+
+    public static function findByAccessToken($accessToken)
+    {
+        return Auth::where('access_token', '=', $accessToken)
             ->firstOrFail();
     }
 

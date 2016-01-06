@@ -19,6 +19,7 @@
 </head>
 
 <body>
+
     <nav class="navbar">
         <div class="navbar-inner">
             <div class="container">
@@ -29,7 +30,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                <!-- <a class="navbar-brand" href="/">Telegram Login</a> -->
+                <a class="navbar-brand" href="/">TelegramLogin</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -67,7 +68,7 @@
                 <span class="pull-left">
                     <a href="https://telegram.me/tglogin" target="_blank"><i class="fa fa-bullhorn text-black"></i> TelegramLogin Channel</a>
                     <br>
-                    <a href="https://telegram.me/pichsenmeister" target="_blank"><i class="fa fa-life-ring text-black"></i> Support</a>
+                    <a href="https://telegram.me/TgLoginSupport_Bot" target="_blank"><i class="fa fa-life-ring text-black"></i> Support</a>
                     <br>
                     developed by <a href="https://pichsenmeister.com" target="_blank">david pichsenmeister</a>
                     (<a href="https://github.com/3x14159265">@3x14159265</a>)
@@ -81,6 +82,8 @@
         </div>
     </footer>
 
+    <script type="text/javascript" src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/bower_components/sweetalert/dist/sweetalert.min.js') }}"></script>
     @yield('scripts')
 </body>

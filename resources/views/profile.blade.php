@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('navbar')
-    <li><a href="/">Home</a></li>
     <li><a href="/faq">FAQ</a></li>
     <li><a href="/docs">Documentation</a></li>
     <li><a href="/dashboard">Dashboard</a></li>
@@ -23,7 +22,7 @@
                     <p><strong>Username:</strong> <a href="https://telegram.me/{{ $user->username }}" target="_blank">{{ '@'.$user->username }}</a></p>
                 @endif
                 <p><strong>Telegram ID:</strong> {{ $user->telegram_id }}</p>
-                <p><strong>Generated email:</strong> {{ $user->email }}</p>
+                <!-- <p><strong>Generated email:</strong> {{ $user->email }}</p> -->
                 <p><a href="/logout">Logout</a></p>
             </div>
         </div>
