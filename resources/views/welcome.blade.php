@@ -25,6 +25,7 @@
         <div class="row mtl">
             <div class="col-sm-8 col-sm-offset-2 text-center">
                 <video loop muted autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
+                    <source src="{{ asset('/vid/telegramlogin.webm') }}" type="video/webm">
                     <source src="{{ asset('/vid/telegramlogin.mp4') }}" type="video/mp4">
                     <source src="{{ asset('/vid/telegramlogin.ogv') }}" type="video/ogg">
                     Your browser does not support the video tag.
