@@ -17,11 +17,20 @@
         <div class="text-muted"><small>(unofficial)</small></div>
     </div
     <div class="container">
-        <div class="row">
+        <div class="row mbl">
             <div class="col-sm-12 text-center">
                 <h2>Authenticate users via Telegram Messenger</h2>
             </div>
-        </div
+        </div>
+        <div class="row mtl">
+            <div class="col-sm-8 col-sm-offset-2 text-center">
+                <video loop muted autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
+                    <source src="{{ asset('/vid/telegramlogin.ogv') }}" type="video/ogg">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+
     </div>
     <div class="container mtl mbl">
         <div class="row">

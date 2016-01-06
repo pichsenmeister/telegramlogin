@@ -129,3 +129,7 @@ body {
 .mr {
     margin-right: 15px;
 }
+.fullscreen-bg__video {
+    width: 100%;
+    height: 100%;
+}
