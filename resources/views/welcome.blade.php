@@ -25,6 +25,7 @@
         <div class="row mtl">
             <div class="col-sm-8 col-sm-offset-2 text-center">
                 <video loop muted autoplay poster="img/videoframe.jpg" class="fullscreen-bg__video">
+                    <source src="{{ asset('/vid/telegramlogin.mp4') }}" type="video/mp4">
                     <source src="{{ asset('/vid/telegramlogin.ogv') }}" type="video/ogg">
                     Your browser does not support the video tag.
                 </video>
@@ -38,7 +39,7 @@
                 <h3>Features</h3>
             </div>
         </div>
-        <div class="row mtl">
+        <div class="row mtl mbl">
             <div class="col-sm-4 text-center">
                 <i class="fa fa-paper-plane fa-4x"></i>
                 <h4>Telegram Messenger</h4>
