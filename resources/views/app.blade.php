@@ -30,7 +30,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                <a class="navbar-brand" href="/">TelegramLogin</a>
+                <a class="navbar-brand" href="/">TelegramLogin <sup>β</sup></a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
@@ -45,9 +45,10 @@
                             </li>
                         @else
                             <li>
-                                <a href="{{ config('app.url').'/token/314159265?state='.random_str(20) }}" >
+                                <!-- <a href="{{ config('app.url').'/token/314159265?state='.random_str(20) }}" > -->
+                                <a href="#" >
                                     <!-- <button class="btn btn-primary logo-button"> -->
-                                        <i class="fa fa-key logo-key"></i> Login with Telegram
+                                        <i class="fa fa-key logo-key"></i> Login with Telegram (very soon)
                                     <!-- </button> -->
                                 </a>
                             </li>
@@ -87,16 +88,16 @@
     <script type="text/javascript" src="{{ asset('/bower_components/sweetalert/dist/sweetalert.min.js') }}"></script>
     @yield('scripts')
     @if(app()->environment('production'))
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-46206707-7', 'auto');
-      ga('send', 'pageview');
+          ga('create', 'UA-46206707-7', 'auto');
+          ga('send', 'pageview');
 
-    </script>
+        </script>
     @endif
 </body>
 

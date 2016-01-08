@@ -13,7 +13,7 @@
         <div class="logo">
             <i class="fa fa-6 fa-key logo-key"></i>
         </div>
-        <h1>TelegramLogin</h1>
+        <h1>TelegramLogin <sup>β</sup></h1>
         <div class="text-muted"><small>(unofficial)</small></div>
     </div
     <div class="container">
