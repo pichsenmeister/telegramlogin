@@ -31,11 +31,8 @@ class UserTableSeeder extends Seeder
         $app->name = 'Telegram Login';
         $app->client_id = 314159265;
         $app->client_secret = generate_client_secret();
-        $app->website = 'https://telegramlogin.com';
-        if(app()->environment('production'))
-            $app->redirect_url = 'https://telegramlogin.com/login';
-        else
-            $app->redirect_url = 'http://tglogin.app/login';
+        $app->website = env('URL');
+        $app->redirect_url = env('URL').'/login';
         $app->save();
 
         $tg = new TelegramUser();

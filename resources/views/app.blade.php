@@ -45,11 +45,9 @@
                             </li>
                         @else
                             <li>
-                                <!-- <a href="{{ config('app.url').'/token/314159265?state='.random_str(20) }}" > -->
-                                <a href="#" >
-                                    <!-- <button class="btn btn-primary logo-button"> -->
-                                        <i class="fa fa-key logo-key"></i> Login with Telegram (very soon)
-                                    <!-- </button> -->
+                                <a href="{{ config('app.url').'/token/314159265?state='.random_str(20) }}" >
+                                <!-- <a href="#" > -->
+                                    <i class="fa fa-key logo-key"></i> Login with Telegram
                                 </a>
                             </li>
                         @endif

@@ -49,7 +49,7 @@
             <div class="col-sm-4 text-center">
                 <i class="fa fa-puzzle-piece fa-4x"></i>
                 <h4>Easy Integration</h4>
-                <p class="text-left">TelegramLogin conforms to the <a href="http://openid.net/connect/" taret="_blank">OpenID Connect</a> specification.
+                <p class="text-left">TelegramLogin follows state-of-the-art developer workflows of social logins.
                 Register your webservice on TelegramLogin and get started with hands-on examples in our <a href="/docs">docs</a> section.</p>
             </div>
             <div class="col-sm-4 text-center">
