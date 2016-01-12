@@ -1,27 +1,25 @@
-## Laravel PHP Framework
+## TelegramLogin
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+[TelegramLogin.com](https://telegramlogin.com) is a webservice combined with a Telegram Bot to bring social login to the Telegram platform.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+TelegramLogin is based on the Laravel Framework. To get it running on your server, check the [Laravel docs](https://laravel.com/docs/5.1) to get started. As database I use MySQL, but any other storage can be used as well.
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+1. Checkout this repository 
+ ``` git clone https://github.com/3x14159265/telegramlogin.git ```
+2. Install [composer](https://getcomposer.org/doc/00-intro.md)
+3. Run ``` composer install``` in telegramlogin folder
+4. Copy the ```.env.example``` environment file to ```.env```
+5. Replace all values within ```<  >``` to your values
 
 ## Official Documentation
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+Documentation for the TelegramLogin can be found on the [telegramlogin.com/docs](https://telegramlogin.com/docs).
 
-## Contributing
+## FAQs
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+Check our FAQs on [messengersbox.com](http://messengersbox.com/t/telegramlogin-com-faq/53).
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
 ### License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+TelegramLogin is open-sourced software licensed under [GPL v3.0](http://www.gnu.org/copyleft/gpl.html), documentation under [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/).
