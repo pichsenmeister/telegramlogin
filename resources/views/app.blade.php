@@ -13,13 +13,12 @@
     <link rel="icon" type="image/png" href="{{ asset('/img/logo.png') }}">
     <meta name="description" content="Authenticate users via Telegram Messengers with Telegram Login">
     <meta property="og:title" content="TelegramLogin - Authenticate users via Telegram Messenger.">
-    <meta property="og:description" content="">
+    <meta property="og:description" content="Authenticate users via Telegram Messengers with Telegram Login">
     <meta property="og:image" content="{{ asset('/img/logo-white.png') }}">
     <meta property="og:image:url_secure" content="{{ asset('/img/logo-white.png') }}">
 </head>
 
 <body>
-
     <nav class="navbar">
         <div class="navbar-inner">
             <div class="container">
@@ -79,6 +78,8 @@
                     powered by <a href="https://orat.io" target="_blank">orat.io</a> -
                     <br>
                     Connecting businesses and customers through messengers
+                    <br>
+                    <i class="fa fa-github"></i> <a href="https://github.com/3x14159265/telegramlogin" target="_blank">Github</a>
                 </span>
             </p>
         </div>
