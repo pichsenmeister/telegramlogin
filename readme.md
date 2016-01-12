@@ -9,7 +9,9 @@ TelegramLogin is based on the Laravel Framework. To get it running on your serve
 2. Install [composer](https://getcomposer.org/doc/00-intro.md)
 3. Run ``` composer install``` in telegramlogin folder
 4. Copy the ```.env.example``` environment file to ```.env```
-5. Replace all values within ```<  >``` to your values
+5. Replace all ```<  >``` values in ```.env``` file to your personal values
+6. Set the webhook of your TelegramBot to according to your ```WEBHOOK_TOKEN``` in your ```.env``` file
+(if your domain is ```https://example.com``` and your ```WEBHOOK_TOKEN``` is e.g. `randomToken`, you must set the webhook of your Telegram Bot to ```https://example.com/receive/randomToken```)
 
 ## Official Documentation
 
