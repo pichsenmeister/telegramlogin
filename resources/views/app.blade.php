@@ -69,15 +69,18 @@
                     <br>
                     <a href="https://telegram.me/TgLoginSupport_Bot" target="_blank"><i class="fa fa-life-ring text-black"></i> Support</a>
                     <br>
+                    <i class="fa fa-github"></i> <a href="https://github.com/3x14159265/telegramlogin" target="_blank">Github</a>
+                    <br>
                     developed by <a href="https://pichsenmeister.com" target="_blank">david pichsenmeister</a>
-                    (<a href="https://github.com/3x14159265">@3x14159265</a>)
+                    (<a href="https://pichsenmeister.com">@3x14159265</a>)
                 </span>
-                <span class="pull-right">
+                <span class="pull-right text-right">
+                    <a href="https://orat.io"><img src="{{ asset('/img/oratio-logo.png')}}" alt="orat.io Logo"></a>
+                    <br>
                     powered by <a href="https://orat.io" target="_blank">orat.io</a> -
                     <br>
                     Connecting businesses and customers through messengers
-                    <br>
-                    <i class="fa fa-github"></i> <a href="https://github.com/3x14159265/telegramlogin" target="_blank">Github</a>
+
                 </span>
             </p>
         </div>

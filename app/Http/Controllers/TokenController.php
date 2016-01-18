@@ -26,14 +26,14 @@ class TokenController extends Controller
     }
 
     private function createToken($app) {
-        //try {
+        try {
             $randToken = generate_token();
             return Token::create(array(
                 'app_id' => $app->id,
                 'token' => $randToken
             ));
-        //} catch(\Exception $e) {
-        //    return $this->createToken($app);
-        //}
+        } catch(\Exception $e) {
+           return $this->createToken($app);
+        }
     }
 }

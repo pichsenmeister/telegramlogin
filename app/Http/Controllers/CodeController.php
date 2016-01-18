@@ -31,7 +31,6 @@ class CodeController extends Controller
                 return response()->json(['error' => 401, 'description' => 'No active user found.'], 401);
             } else {
                 $auth->telegram_user = $auth->telegramUser()->first();
-                //$data = array_merge($tgUser->toArray(), $auth->toArray());
                 return response()->json($auth);
             }
         } catch (ModelNotFoundException $e) {

@@ -82,7 +82,7 @@ class TelegramController extends Controller
         $auth->active = true;
         $auth->save();
 
-        $code = Code::firstOrCreate(array(
+        $code = Code::create(array(
             'app_id' => $app->id,
             'auth_id' => $auth->id,
             'code' => generate_code()

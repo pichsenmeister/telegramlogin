@@ -19,6 +19,13 @@
         <div class="row mbl">
             <div class="col-sm-12 text-center">
                 <h2>Authenticate users via Telegram Messenger</h2>
+                @if(!Auth::user())
+                    <p class="mtl">
+                        <a class="btn btn-logo btn-lg" href="{{ config('app.url').'/token/314159265?state='.random_str(20) }}">
+                            <i class="fa fa-paper-plane-o"></i> Login with Telegram
+                        </a>
+                    </p>
+                @endif
             </div>
         </div>
         <div class="row mtl">

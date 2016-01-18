@@ -24,7 +24,7 @@ class UserController extends Controller
             $auth->telegram_user = $auth->telegramUser()->first();
             return response()->json($auth);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'No active user found.'],404);
+            return response()->json(['error' => 'No active user found.'], 404);
         }
     }
 
@@ -37,7 +37,7 @@ class UserController extends Controller
 
     private function getUser($code, $state)
     {
-        $app = App::findOrFail(1);
+        $app = App::findByClientId(314159265);
 
         $params = array(
             'code' => $code,

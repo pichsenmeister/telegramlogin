@@ -24,13 +24,11 @@
     background: #1e96c8;
     border-color: #1e96c8;
     color: #fff !important;
-
 }
 .btn-logo:active, .btn-logo:focus {
     background: #057daf !important;
     border-color: #057daf !important;
 }
-
 
 /* navbar
 -------------------------------------------------- */
@@ -71,18 +69,36 @@ html {
   position: relative;
   min-height: 100%;
 }
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 100px;
+@media (min-width: 741px) {
+    body {
+      margin-bottom: 120px;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      /* Set the fixed height of the footer here */
+      height: 120px;
+      background-color: #f5f5f5;
+    }
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 100px;
-  background-color: #f5f5f5;
+@media (max-width: 740px) {
+    body {
+      margin-bottom: 220px;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      /* Set the fixed height of the footer here */
+      height: 220px;
+      background-color: #f5f5f5;
+    }
+    .footer .pull-right {
+        margin-top: 15px;
+    }
 }
+
 
 
 /* Custom page CSS
