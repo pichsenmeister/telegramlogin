@@ -67,70 +67,84 @@ class TelegramController extends Controller
             $tg->telegram_id = $telegramId;
         }
         $tg->name = $telegramName;
-        if(isset($username))
-            $tg->username = $username;
-        if($app->client_id == 314159265) {
-            $tg->status = str_replace('state=', '', $token->query_string);
-        } else {
-            $tg->status = 'access_granted';
-        }
         $tg->save();
 
-        try {
-            $auth = Auth::findByAppAndTelegramUser($app, $tg);
-        } catch (ModelNotFoundException $e) {
-            $auth = new Auth();
-            $auth->app_id = $app->id;
-            $auth->telegram_user_id = $tg->id;
-            $auth->email = generate_email().'-'.$app->id.'-'.$tg->id.'@telegramlogin.com';
+        if($tg->status != '/start') {
+            $tg->status = '/start';
+            $tg->save();
+
+            if(isset($username))
+                $tg->username = $username;
+
+            try {
+                $auth = Auth::findByAppAndTelegramUser($app, $tg);
+            } catch (ModelNotFoundException $e) {
+                $auth = new Auth();
+                $auth->app_id = $app->id;
+                $auth->telegram_user_id = $tg->id;
+                $auth->email = generate_email().'-'.$app->id.'-'.$tg->id.'@telegramlogin.com';
+            }
+            $auth->access_token = generate_access_token();
+            $auth->active = true;
+            $auth->save();
+
+            $code = Code::create(array(
+                'app_id' => $app->id,
+                'auth_id' => $auth->id,
+                'code' => generate_code()
+            ));
+
+            $url = $app->redirect_url.'?code='.$code->code;
+            if($token->query_string)
+                $url .= '&'.$token->query_string;
+
+            $text = 'Please click this link to finish your signup at *'.$app->name.'*: '.PHP_EOL;
+            $text .= '[Click here]('.$url.')';
+
+            $params = array(
+                'text' => $text,
+                'chat_id' => $telegramId
+            );
+
+            $success = false;
+            $trys = 0;
+            while(!$success && $trys < 5) {
+                $success = $this->send($params)['ok'];
+                sleep(1);
+                $trys++;
+            }
+
+            $token->delete();
+
+            if($app->client_id == 314159265) {
+                $tg->status = str_replace('state=', '', $token->query_string);
+            } else {
+                $tg->status = 'access_granted';
+            }
+            $tg->save();
         }
-        $auth->access_token = generate_access_token();
-        $auth->active = true;
-        $auth->save();
-
-        $code = Code::create(array(
-            'app_id' => $app->id,
-            'auth_id' => $auth->id,
-            'code' => generate_code()
-        ));
-
-        $url = $app->redirect_url.'?code='.$code->code;
-        if($token->query_string)
-            $url .= '&'.$token->query_string;
-
-        $text = 'Please click this link to finish your signup at *'.$app->name.'*: '.PHP_EOL;
-        $text .= '[Click here]('.$url.')';
-
-        $params = array(
-            'text' => $text,
-            'chat_id' => $telegramId
-        );
-
-        $success = false;
-        $trys = 0;
-        while(!$success && $trys < 5) {
-            $success = $this->send($params)['ok'];
-            sleep(1);
-            $trys++;
-        }
-
-        $token->delete();
     }
 
     private function cancel($message)
     {
         $telegramId = $message['from']['id'];
         $tg = TelegramUser::findByTelegramId($telegramId);
-        $tg->status = 'cancel';
-        $tg->save();
 
-        $params = array(
-            'text' => 'Operation cancelled.',
-            'chat_id' => $telegramId,
-            'reply_markup' => json_encode(['hide_keyboard' => true])
-        );
+        if($tg->status != '/cancel') {
+            $tg->status = '/cancel';
+            $tg->save();
 
-        $this->send($params);
+            $params = array(
+                'text' => 'Operation cancelled.',
+                'chat_id' => $telegramId,
+                'reply_markup' => json_encode(['hide_keyboard' => true])
+            );
+
+            $this->send($params);
+
+            $tg->status = 'operation_cancelled';
+            $tg->save();
+        }
     }
 
     private function listApps($message)
@@ -173,29 +187,36 @@ class TelegramController extends Controller
         $telegramId = $message['from']['id'];
 
         $tg = TelegramUser::findByTelegramId($telegramId);
-        $tg->status = 'revoke_access';
-        $tg->save();
-        $apps = App::findByTelegramUser($tg);
 
-        $keyboard = array();
-        foreach($apps as $a) {
-            $keyboard[] = array('['.$a->client_id.'] - '.$a->name);
+        if($tg->status != '/revoke') {
+            $tg->status = '/revoke';
+            $tg->save();
+
+            $apps = App::findByTelegramUser($tg);
+
+            $keyboard = array();
+            foreach($apps as $a) {
+                $keyboard[] = array('['.$a->client_id.'] - '.$a->name);
+            }
+
+            $markup = array(
+                'keyboard' => $keyboard,
+                'resize_keyboard' => true,
+                'one_time_keyboard' => true
+            );
+
+            $text = 'Select an app to revoke access or type /cancel to cancel this operation:'.PHP_EOL;
+            $params = array(
+                'text' => $text,
+                'chat_id' => $telegramId,
+                'reply_markup' => json_encode($markup)
+            );
+
+            $this->send($params);
+
+            $tg->status = 'revoke_access';
+            $tg->save();
         }
-
-        $markup = array(
-            'keyboard' => $keyboard,
-            'resize_keyboard' => true,
-            'one_time_keyboard' => true
-        );
-
-        $text = 'Select an app to revoke access or type /cancel to cancel this operation:'.PHP_EOL;
-        $params = array(
-            'text' => $text,
-            'chat_id' => $telegramId,
-            'reply_markup' => json_encode($markup)
-        );
-
-        $this->send($params);
     }
 
     private function help($message)
@@ -203,16 +224,21 @@ class TelegramController extends Controller
         $telegramId = $message['from']['id'];
 
         $tg = TelegramUser::findByTelegramId($telegramId);
-        $tg->status = 'help';
-        $tg->save();
+        if($tg->status != '/help') {
+            $tg->status = '/help';
+            $tg->save();
 
-        $text = 'Please check our [FAQs](https://telegramlogin.com/faq) for help.'.PHP_EOL;
-        $params = array(
-            'text' => $text,
-            'chat_id' => $telegramId
-        );
+            $text = 'Please check our [FAQs](https://telegramlogin.com/faq) for help.'.PHP_EOL;
+            $params = array(
+                'text' => $text,
+                'chat_id' => $telegramId
+            );
 
-        $this->send($params);
+            $this->send($params);
+
+            $tg->status = 'help';
+            $tg->save();
+        }
     }
 
     private function commandReply($message)
@@ -220,34 +246,37 @@ class TelegramController extends Controller
         $telegramId = $message['from']['id'];
         $tg = TelegramUser::findByTelegramId($telegramId);
 
-        $params = array(
-            'chat_id' => $telegramId
-        );
 
-        if($tg->status == 'revoke_access') {
-            $clientId = preg_replace('/[^0-9,.]/', '', $message['text']);
-            try {
-                $app = App::findByClientId($clientId);
-                $auth = Auth::findByAppAndTelegramUser($app, $tg);
-                $auth->active = false;
-                $auth->save();
-                $text = 'Access to this app has been revoked.';
-                $tg->status = 'access_revoked';
+
+            $params = array(
+                'chat_id' => $telegramId
+            );
+
+            if($tg->status == 'revoke_access') {
+                $clientId = preg_replace('/[^0-9,.]/', '', $message['text']);
+                try {
+                    $app = App::findByClientId($clientId);
+                    $auth = Auth::findByAppAndTelegramUser($app, $tg);
+                    $auth->active = false;
+                    $auth->save();
+                    $text = 'Access to this app has been revoked.';
+                    $tg->status = 'access_revoked';
+                    $params['reply_markup'] = json_encode(['hide_keyboard' => true]);
+                } catch(ModelNotFoundException $e) {
+                    $text = 'Unknown app. Please choose an app from the given list:';
+                }
+            } else {
+                $text = 'Unknown command.';
+                $tg->status = 'unknown_command';
                 $params['reply_markup'] = json_encode(['hide_keyboard' => true]);
-            } catch(ModelNotFoundException $e) {
-                $text = 'Unknown app. Please choose an app from the given list:';
             }
-        } else {
-            $text = 'Unknown command.';
-            $tg->status = 'unknown_command';
-            $params['reply_markup'] = json_encode(['hide_keyboard' => true]);
-        }
 
-        $tg->save();
+            $params['text'] = $text;
 
-        $params['text'] = $text;
+            $this->send($params);
 
-        $this->send($params);
+            $tg->save();
+        
     }
 
 
