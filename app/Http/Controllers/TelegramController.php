@@ -17,28 +17,33 @@ class TelegramController extends Controller
 {
     public function receive(Request $request, $token)
     {
-        if($token != env('WEBHOOK_TOKEN'))
-            app()->abort(401, 'This is not the site you are looking for!');
+        try {
+            if($token != env('WEBHOOK_TOKEN'))
+                app()->abort(401, 'This is not the site you are looking for!');
 
-        $message = $request->input('message');
+            $message = $request->input('message');
 
-        if(!array_key_exists('text', $message))
-            app()->abort(200, 'Missing command');
+            if(!array_key_exists('text', $message))
+                app()->abort(200, 'Missing command');
 
-        if(starts_with($message['text'], '/start'))
-            $this->start($message);
-        else if(starts_with($message['text'], '/cancel'))
-            $this->cancel($message);
-        else if(starts_with($message['text'], '/list'))
-            $this->listApps($message);
-        else if(starts_with($message['text'], '/revoke'))
-            $this->revoke($message);
-        else if(starts_with($message['text'], '/help'))
-            $this->help($message);
-        else
-            $this->commandReply($message);
+            if(starts_with($message['text'], '/start'))
+                $this->start($message);
+            else if(starts_with($message['text'], '/cancel'))
+                $this->cancel($message);
+            else if(starts_with($message['text'], '/list'))
+                $this->listApps($message);
+            else if(starts_with($message['text'], '/revoke'))
+                $this->revoke($message);
+            else if(starts_with($message['text'], '/help'))
+                $this->help($message);
+            else
+                $this->commandReply($message);
 
-        return response()->json('', 200);
+            return response()->json('', 200);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            app()->abort(200);
+        }
     }
 
     private function start($message) {
@@ -62,7 +67,8 @@ class TelegramController extends Controller
             $tg->telegram_id = $telegramId;
         }
         $tg->name = $telegramName;
-        $tg->username = $username;
+        if(isset($username))
+            $tg->username = $username;
         if($app->client_id == 314159265) {
             $tg->status = str_replace('state=', '', $token->query_string);
         } else {
@@ -130,32 +136,36 @@ class TelegramController extends Controller
     private function listApps($message)
     {
         $telegramId = $message['from']['id'];
-
         $tg = TelegramUser::findByTelegramId($telegramId);
-        $tg->status = 'list_apps';
-        $tg->save();
-        $apps = App::findByTelegramUser($tg);
-        if(count($apps)) {
-            $text = 'Here are your active apps:'.PHP_EOL;
-            $count = 1;
-            foreach($apps as $a) {
-                $text .= $count.'. '.$a->name;
-                if($a->website)
-                    $text .= ' ('.$a->website.')';
-                $text .= PHP_EOL;
-                $count++;
+        if($tg->status != '/list') {
+            $tg->status = '/list';
+            $tg->save();
+            $apps = App::findByTelegramUser($tg);
+            if(count($apps)) {
+                $text = 'Here are your active apps:'.PHP_EOL;
+                $count = 1;
+                foreach($apps as $a) {
+                    $text .= $count.'. '.$a->name;
+                    if($a->website)
+                        $text .= ' ('.$a->website.')';
+                    $text .= PHP_EOL;
+                    $count++;
+                }
+                $text .= PHP_EOL.'';
+            } else {
+                $text = 'You have no active apps.';
             }
-            $text .= PHP_EOL.'';
-        } else {
-            $text = 'You have no active apps.';
+
+            $params = array(
+                'text' => $text,
+                'chat_id' => $telegramId
+            );
+
+            $this->send($params);
+
+            $tg->status = 'list_apps';
+            $tg->save();
         }
-
-        $params = array(
-            'text' => $text,
-            'chat_id' => $telegramId
-        );
-
-        $this->send($params);
     }
 
     private function revoke($message)
