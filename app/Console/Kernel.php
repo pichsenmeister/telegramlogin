@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\CodeDelete::class,
-        Commands\TokenDelete::class
+        Commands\TokenDelete::class,
+        Commands\Webhook::class
     ];
 
     /**

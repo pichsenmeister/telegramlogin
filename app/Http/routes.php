@@ -26,6 +26,7 @@ Route::post('/code', 'CodeController@code');
 
 Route::get('/user', 'UserController@show');
 Route::post('/user', 'UserController@show');
+Route::post('/user/send', 'UserController@send');
 
 // generate token and redirect to telegram.me site
 Route::get('/token/{clientId}', 'TokenController@generateToken');

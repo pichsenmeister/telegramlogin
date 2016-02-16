@@ -25,11 +25,18 @@ class TelegramUser extends Model
      *
      * @var array
      */
-    protected $hidden = ['id', 'status', 'created_at', 'updated_at', 'email'];
+    protected $hidden = ['id', 'status', 'created_at', 'updated_at', 'email', 'update_id'];
 
     public static function findByTelegramId($telegramId)
     {
         return TelegramUser::where('telegram_id', '=', $telegramId)
+            ->firstOrFail();
+    }
+
+    public static function findByTelegramIdAndUpdateId($telegramId, $updateId)
+    {
+        return TelegramUser::where('telegram_id', '=', $telegramId)
+            ->where('update_id', '=', $updateId)
             ->firstOrFail();
     }
 

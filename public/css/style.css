@@ -61,6 +61,9 @@
 .navbar-toggle .icon-bar {
     background: #179cde;
 }
+.navbar-avatar {
+    width: 22px;
+}
 
 
 /* Sticky footer styles

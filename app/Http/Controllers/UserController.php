@@ -28,6 +28,40 @@ class UserController extends Controller
         }
     }
 
+    public function send(Request $request)
+    {
+        $accessToken = $request->input('access_token');
+        try {
+            $auth = \App\Auth::findByAccessToken($accessToken);
+            $auth->telegram_user = $auth->telegramUser()->first();
+
+            $app = $auth->app()->first();
+            $text = 'Send on behalf of app: ['. $app->client_id .'] '. $app->name.PHP_EOL;
+            $text .= 'Message: '.PHP_EOL;
+            $text .= $request->input('text');
+
+            $params = array(
+                'chat_id' => $auth->telegram_user->telegram_id,
+                'text' => $text,
+                'parse_mode' => 'Markdown'
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://api.telegram.org/bot'.env('BOT_TOKEN').'/sendMessage');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            $json = curl_exec($ch);
+            $result = json_decode($json, true);
+
+            if($result['ok'])
+                return response()->json(array('ok' => true));
+            else
+                return response()->json($result);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'No active user found.'], 404);
+        }
+    }
+
     public function login(Requests\LoginRequest $request)
     {
         $user = $this->getUser($request->input('code'), $request->input('state'));
@@ -78,10 +112,5 @@ class UserController extends Controller
 
         return $user;
     }
-
-
-
-
-
 
 }

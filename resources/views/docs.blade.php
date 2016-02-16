@@ -36,6 +36,9 @@
                         </ol>
                     </li>
                     <li>
+                        <a href="#send-message-to-user">Send message to user</a>
+                    </li>
+                    <li>
                         <a href="#create-telegramlogin-button">Create TelegramLogin button example</a>
                     </li>
                 </ul>
@@ -250,7 +253,8 @@ client_secret=&lt;your_client_secret&gt;</pre>
     telegram_user: {
         telegram_id: 31415265,
         name: "David Pichsenmeister",
-        username: "@pichsenmeister"
+        username: "@pichsenmeister",
+        avatar: "path/to/avatar.jpg"
     }
 }</pre>
                 </p>
@@ -266,7 +270,7 @@ client_secret=&lt;your_client_secret&gt;</pre>
                 <p>
                     Once a valid access token is generated and the user haven't revoked access to your app,
                     user information can be retrieved via the <code>https://telegramlogin.com/user</code> endpoint.
-                    Therefore the access token must be given as <code>access_token</code> parameter.
+                    Therefore the access token must be passed as <code>access_token</code> parameter.
                     The request can be either <code>GET</code> or <code>POST</code>.
                 </p>
                 <p>
@@ -289,8 +293,56 @@ Host: telegramlogin.com</pre>
                 </p>
             </div>
         </div>
+    </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 id="send-message-to-user">Send message to user</h2>
+                <hr>
+            </div>
+        </div>
 
+        <div class="row">
+            <div class="col-sm-12">
+                <p>
+                    A text message can be send to the user via the <code>https://telegramlogin.com/user/send</code> endpoint.
+                    Therefore the access token must be passed as <code>access_token</code> parameter and the text to send as <code>text</code> parameter.
+                    The request must be <code>POST</code>.
+                </p>
+                <p>
+                    <i>Example <code>POST</code> request:</i>
+                    <br>
+                    <pre>POST /user/send
+Host: telegramlogin.com
+Content-Type: application/x-www-form-urlencoded
+
+access_token=&lt;access_token&gt;&amp;
+text=&lt;some url encoded text&gt;
+</pre>
+                </p>
+                <p>
+                    The response is either a success message:
+                </p>
+                <p>
+                    <pre>{
+    ok: true
+}
+                    </pre>
+                </p>
+                <p>
+                    or the detailed error message of Telegram:
+                </p>
+                <p>
+                    <pre>{
+    ok: false
+    error_code: 403
+    description: "[Error]: Forbidden: can't write to chat with deleted user"
+}
+                    </pre>
+                </p>
+            </div>
+        </div>
     </div>
 
     <div class="container">

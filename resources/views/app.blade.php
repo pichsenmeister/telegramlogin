@@ -40,6 +40,9 @@
                         @if(Auth::user())
                             <li>
                                 <a href="/profile" >
+                                    @if(Auth::user()->avatar)
+                                        <img class="navbar-avatar" src="/{{ Auth::user()->avatar }}" alt="Auth::user()->name">
+                                    @endif
                                     {{ Auth::user()->name }}
                                 </a>
                             </li>

@@ -25,5 +25,25 @@
                 <p><a href="/logout">Logout</a></p>
             </div>
         </div>
+        <div class="row mtl">
+            <div class="col-sm-12">
+                Raw data:
+            </div>
+            <div class="col-sm-12">
+<pre id="telegramlogin-user-response">{
+    id: {{ $user->id }},
+    email: "{{ $user->email }}"",
+    access_token: "{{ $user->access_token }}",
+    active: 1,
+    created_at: "{{ $user->created_at }}",
+    telegram_user: {
+        telegram_id: {{ $user->telegram_id }},
+        name: "{{ $user->name }}",
+        username: "{{ $user->username }}",
+        avatar: "{{ $user->avatar }}"
+    }
+}</pre>
+            </div>
+        </div>
     </div>
 @endsection

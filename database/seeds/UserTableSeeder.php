@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         $access_token = generate_access_token();
-        $email = generate_email().'@telegramlogin.com';
+        $email = 'a1t1-'.generate_email().'@telegramlogin.com';
 
         $user = new User();
         $user->name = 'david pichsenmeister';
