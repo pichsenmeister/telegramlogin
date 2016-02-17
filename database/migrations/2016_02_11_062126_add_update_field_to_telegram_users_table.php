@@ -32,6 +32,15 @@ class AddUpdateFieldToTelegramUsersTable extends Migration
 
                 if(array_key_exists('photos', $response) && count($response['photos']) > 0) {
                     $file = $response['photos'][0][1];
+                    if(!array_key_exists('file_path'), $file) {
+                        $json = file_get_contents('https://api.telegram.org/bot'.env('BOT_TOKEN').'/getFile?file_id='.$file['file_id']);
+                        $response = json_decode($json, true)['result'];
+                        $file = $response;
+                    }
+                    if(!array_key_exists('file_path'), $file) {
+                        throw new \Exception();
+                    }
+
                     $path = $file['file_path'];
                     $split = explode('.', $path);
                     $id = $file['file_id'].'.'.end($split);
