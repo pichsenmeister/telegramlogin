@@ -64,5 +64,9 @@ class AddUpdateFieldToTelegramUsersTable extends Migration
             $table->dropColumn('update_id');
             $table->dropColumn('avatar');
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('avatar');
+        });
     }
 }
