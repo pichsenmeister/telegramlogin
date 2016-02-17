@@ -36,9 +36,11 @@ class UserController extends Controller
             $auth->telegram_user = $auth->telegramUser()->first();
 
             $app = $auth->app()->first();
-            $text = 'Send on behalf of app: ['. $app->client_id .'] '. $app->name.PHP_EOL;
+            $text = 'Send on behalf of app: ['. $app->client_id .'] '. $app->name.PHP_EOL.PHP_EOL;
             $text .= 'Message: '.PHP_EOL;
-            $text .= $request->input('text');
+            $text .= $request->input('text').PHP_EOL.PHP_EOL;
+            $text .= 'Note: If you don\'t want to receive further updates from ['. $app->client_id .'] '. $app->name;
+            $text. = ', please revoke access via the /revoke command';
 
             $params = array(
                 'chat_id' => $auth->telegram_user->telegram_id,

@@ -178,7 +178,7 @@
                 </p>
 
                 <div class="alert alert-info">
-                    <strong>Background information:</strong>
+                    <strong>Note:</strong>
                     TelegramLogin creates a unique token on this endpoint to recognize the Telegram user to your app
                     and redirects the user to <code>https://telegram.me/TgLogin_Bot?start=&lt;unique_token&gt;</code>.
                     The <code>https://telegram.me</code> endpoint automatically tries to open
@@ -253,11 +253,15 @@ client_secret=&lt;your_client_secret&gt;</pre>
     telegram_user: {
         telegram_id: 31415265,
         name: "David Pichsenmeister",
-        username: "@pichsenmeister",
+        username: "pichsenmeister",
         avatar: "path/to/avatar.jpg"
     }
 }</pre>
                 </p>
+                <div class="alert alert-info">
+                    <strong>Note:</strong>
+                    The avatar URL is relative and can be retrieved through following endpoint: <code>https://telegramlogin.com/<strong>path/to/avatar.jpg</strong></code>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -306,9 +310,8 @@ Host: telegramlogin.com</pre>
         <div class="row">
             <div class="col-sm-12">
                 <p>
-                    A text message can be send to the user via the <code>https://telegramlogin.com/user/send</code> endpoint.
+                    A text message can be send to the user trough a <code>POST</code> request via the <code>https://telegramlogin.com/user/send</code> endpoint.
                     Therefore the access token must be passed as <code>access_token</code> parameter and the text to send as <code>text</code> parameter.
-                    The request must be <code>POST</code>.
                 </p>
                 <p>
                     <i>Example <code>POST</code> request:</i>

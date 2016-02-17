@@ -49,7 +49,7 @@ class AddUpdateFieldToTelegramUsersTable extends Migration
                         $user->save();
                     }
                 }
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) { \Log::error($e); }
         }
     }
 
