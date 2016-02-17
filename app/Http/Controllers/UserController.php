@@ -40,7 +40,7 @@ class UserController extends Controller
             $text .= 'Message: '.PHP_EOL;
             $text .= $request->input('text').PHP_EOL.PHP_EOL;
             $text .= 'Note: If you don\'t want to receive further updates from ['. $app->client_id .'] '. $app->name;
-            $text. = ', please revoke access via the /revoke command';
+            $text .= ', please revoke access via the /revoke command';
 
             $params = array(
                 'chat_id' => $auth->telegram_user->telegram_id,
