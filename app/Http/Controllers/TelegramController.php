@@ -43,23 +43,28 @@ class TelegramController extends Controller
     }
 
     private function execute($message, $tg) {
-        if(!array_key_exists('text', $message))
-            app()->abort(200, 'Missing command');
+        try {
+            if(!array_key_exists('text', $message))
+                app()->abort(200, 'Missing command');
 
-        if(starts_with($message['text'], '/start'))
-            $this->start($message, $tg);
-        else if(starts_with($message['text'], '/cancel'))
-            $this->cancel($message, $tg);
-        else if(starts_with($message['text'], '/list'))
-            $this->listApps($message, $tg);
-        else if(starts_with($message['text'], '/revoke'))
-            $this->revoke($message, $tg);
-        else if(starts_with($message['text'], '/help'))
-            $this->help($message, $tg);
-        else
-            $this->commandReply($message);
+            if(starts_with($message['text'], '/start'))
+                $this->start($message, $tg);
+            else if(starts_with($message['text'], '/cancel'))
+                $this->cancel($message, $tg);
+            else if(starts_with($message['text'], '/list'))
+                $this->listApps($message, $tg);
+            else if(starts_with($message['text'], '/revoke'))
+                $this->revoke($message, $tg);
+            else if(starts_with($message['text'], '/help'))
+                $this->help($message, $tg);
+            else
+                $this->commandReply($message, $tg);
 
-        return response()->json('', 200);
+            return response()->json('', 200);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            app()->abort(200);
+        }
     }
 
     private function start($message, $tg) {
@@ -127,7 +132,6 @@ class TelegramController extends Controller
         $tg->save();
 
         $apps = App::findByTelegramUser($tg);
-        \Log::debug($apps);
         if(count($apps) > 0) {
             $text = 'Here are your active apps:'.PHP_EOL;
             $count = 1;
