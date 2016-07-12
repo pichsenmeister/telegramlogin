@@ -1,6 +1,7 @@
 @extends('app')
 
 @section('navbar')
+    <li><a href="/faq">FAQ</a></li>
     <li class="active"><a href="/docs">Documentation</a></li>
     @if(Auth::user())
         <li><a href="/dashboard">Dashboard</a></li>

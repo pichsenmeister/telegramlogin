@@ -33,7 +33,6 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                            <li><a href="http://messengersbox.com/t/telegramlogin-com-faq/53" target="_blank">FAQ</a></li>
                         @yield('navbar')
                     </ul>
                     <ul class="nav navbar-nav pull-right">
