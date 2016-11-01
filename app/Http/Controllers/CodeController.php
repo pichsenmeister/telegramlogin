@@ -25,8 +25,6 @@ class CodeController extends Controller
             $code = Code::findByAppAndCode($app, $request->input('code'));
             $auth = $code->auth()->first();
 
-            $code->delete();
-
             if(!$auth || !$auth->active) {
                 return response()->json(['error' => 401, 'description' => 'No active user found.'], 401);
             } else {
