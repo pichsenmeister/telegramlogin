@@ -77,9 +77,9 @@
                     (<a href="https://pichsenmeister.com">@3x14159265</a>)
                 </span>
                 <span class="pull-right text-right">
-                    <a href="https://orat.io"><img src="{{ asset('/img/oratio-logo.png')}}" alt="orat.io Logo"></a>
+                    <a href="https://orat.io"><img src="{{ asset('/img/oratio-logo.png')}}" alt="oratio Logo"></a>
                     <br>
-                    powered by <a href="https://orat.io" target="_blank">orat.io</a> -
+                    powered by <a href="https://orat.io" target="_blank">oratio</a> -
                     <br>
                     Connecting businesses and customers through messengers
 
