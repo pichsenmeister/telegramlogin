@@ -37,7 +37,7 @@ class CodeDelete extends Command
      */
     public function handle()
     {
-        $cliff = (new \DateTime())->modify('-5 minutes');
+        $cliff = (new \DateTime())->modify('-24 hours');
         \App\Code::where('created_at', '<', $cliff)->delete();
     }
 }
