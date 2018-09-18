@@ -14,11 +14,13 @@ TelegramLogin is based on the Laravel Framework. To get it running on your serve
 (if your domain is ```https://example.com``` and your ```WEBHOOK_TOKEN``` is e.g. `randomToken`, you must set the webhook of your Telegram Bot to ```https://example.com/receive/randomToken```)
 7. [enable Laravel scheduler](https://laravel.com/docs/5.1/scheduling)
 8. Edit  ```database/seeds/UserTableSeeder.php``` with your Telegram user data 
-9. Run Laravel migration ```php aritsan migrate --seed```
+9. Run Laravel migration ```php artisan migrate --seed```
 
 ## Official Documentation
 
-Documentation for the TelegramLogin can be found on the [telegramlogin.com/docs](https://telegramlogin.com/docs).
+Documentation for the TelegramLogin can be found on a subpage of this project.
+1. Run local php server ```php artisan serve```
+2. Go to [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ## FAQs
 
