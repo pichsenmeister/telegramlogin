@@ -10,7 +10,7 @@
     <link href="{{ asset('/css/style.css')}}" rel="stylesheet" type="text/css">
 
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <link rel="icon" type="image/png" href="{{ asset('/img/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('/img/logo-white.png') }}">
     <meta name="description" content="Authenticate users via Telegram Messengers with Telegram Login">
     <meta property="og:title" content="TelegramLogin - Authenticate users via Telegram Messenger.">
     <meta property="og:description" content="Authenticate users via Telegram Messengers with Telegram Login">
